@@ -1,41 +1,52 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import { atom, useAtom } from "jotai";
-import { pizdder } from '../pages';
-import { useBearStore } from '../pages';
-import { useEffect } from 'react';
+import type {NextPage} from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import {atom, useAtom} from 'jotai';
+import {useEffect} from 'react';
 import axios from 'axios';
-
-const loginUser = async () => {
-    const cipger = await axios({
-        method: 'post',
-        url: 'http://localhost:8000/user/login',
-        data: {
-          firstName: 'Fred',
-          lastName: 'Flintstone'
-        }
-      });
-    if (cipger) {
-      console.log(cipger);
-    }
-
-}
+import React from 'react';
+import {useForm} from 'react-hook-form';
+import {getMe, loginUser} from '../services/user/user';
+import type {UserStoreState} from '../store/userStore';
+import {useUserStore} from '../store/userStore';
+import type {LoginFormData, UserStoreInfo} from '../services/user/userTypes';
 
 const LoginForm = () => {
-  const bears = useBearStore((state:any) => state.setDupaCipa)
-  const [huj, setHuj] = useAtom(pizdder);
-  useEffect(()=>{bears()},[huj])
-  return (
-    <form>
-    <div>
-        <input type="text" onChange={(e)=>{loginUser()}}className={"bg-yellow-500"}/>
-    <div>
-      {huj}
-    </div>
-    </div>
-    </form>
-  )
-}
+	const {register, handleSubmit} = useForm<LoginFormData>();
+	const setUser = useUserStore(state => state.setUser);
+	const loggedUser = useUserStore(state => state.username);
+	const onSubmit = handleSubmit(async data => {
+		console.log(data);
+		await loginUser(data.password, data.username)
+			.then(async () => getMe()).then(res => {
+				setUser(res.data.username, res.data.email);
+			}).catch(e => {
+				console.error(e.response);
+			});
+	});
 
-export default LoginForm
+	useEffect(() => {
+		console.log(loggedUser);
+	}, [loggedUser]);
+
+	return (
+		<form onSubmit={onSubmit} className=''>
+			<div className='flex bg-red-200 items-center flex-col flex-1'>
+				<input
+					type='text'
+					{...register('username')}
+					className={'bg-yellow-200 m-3 rounded-md w-40'}
+				/>
+				<input
+					type='text'
+					{...register('password')}
+					className={'bg-yellow-200 m-3 rounded-md w-40'}
+				/>
+				<input type={'submit'}
+					className={'rounded-lg hover:scale-110 text-white bg-blue-500 m-2 pb-1 pt-1 pl-3 pr-3'}
+				/>
+			</div>
+		</form>);
+};
+
+export default LoginForm;
