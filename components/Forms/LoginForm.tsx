@@ -6,17 +6,16 @@ import {useEffect} from 'react';
 import axios from 'axios';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {getMe, loginUser} from '../services/user/user';
-import type {UserStoreState} from '../store/userStore';
-import {useUserStore} from '../store/userStore';
-import type {LoginFormData, UserStoreInfo} from '../services/user/userTypes';
+import {getMe, loginUser} from '../../services/user/user';
+import type {UserStoreState} from '../../store/userStore';
+import {useUserStore} from '../../store/userStore';
+import type {LoginFormData, UserStoreInfo} from '../../services/user/userTypes';
 
 const LoginForm = () => {
 	const {register, handleSubmit} = useForm<LoginFormData>();
 	const setUser = useUserStore(state => state.setUser);
 	const loggedUser = useUserStore(state => state.username);
 	const onSubmit = handleSubmit(async data => {
-		console.log(data);
 		await loginUser(data.password, data.username)
 			.then(async () => getMe()).then(res => {
 				setUser(res.data.username, res.data.email);
