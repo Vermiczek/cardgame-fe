@@ -10,6 +10,16 @@ import {useRouter} from 'next/router';
 
 const Home = () => {
 	const [hasAnAccount, setHasAccount] = useState(true);
+	const loggedUser = useUserStore(state => state.username);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (loggedUser) {
+			router.replace('/dashboard').catch(err => {
+				console.error(err);
+			});
+		}
+	}, [loggedUser]);
 
 	return (
 		<div>

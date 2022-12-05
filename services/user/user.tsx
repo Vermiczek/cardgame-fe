@@ -14,7 +14,6 @@ export const loginUser = async (username: string, password: string) => {
 };
 
 export const getMe = async () => {
-	// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 	const mePromise = await axios({
 		method: 'get',
 		url: 'http://localhost:8000/user/me',
@@ -23,3 +22,15 @@ export const getMe = async () => {
 	return mePromise;
 };
 
+export const logoutUser = async (username: string, password: string) => {
+	const logoutPromise = await axios({
+		method: 'post',
+		url: 'http://localhost:8000/user/logout',
+		data: {
+			username,
+			password,
+		},
+		withCredentials: true,
+	});
+	return logoutPromise;
+};
