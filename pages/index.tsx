@@ -7,6 +7,7 @@ import {useQuery} from 'react-query';
 import {getMe, loginUser} from '../services/user/user';
 import {useUserStore} from '../store/userStore';
 import {useRouter} from 'next/router';
+import RegisterForm from '../components/Forms/RegisterForm';
 
 const Home = () => {
 	const [hasAnAccount, setHasAccount] = useState(true);
@@ -25,9 +26,18 @@ const Home = () => {
 		<div>
 			{hasAnAccount
 				? <LoginForm />
-				: <div></div>
+				: <RegisterForm />
 			}
-		</div>);
+			<button
+				className='block mx-auto mt-4 py-2 px-4 bg-gray-200 rounded-md text-gray-700 font-semibold'
+				onClick={() => {
+					setHasAccount(!hasAnAccount);
+				}}
+			>
+				{hasAnAccount ? 'Don\'t have an account?' : 'Already have an account?'}
+			</button>
+		</div>
+	);
 };
 
 export default Home;

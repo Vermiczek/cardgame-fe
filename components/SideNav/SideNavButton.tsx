@@ -1,30 +1,38 @@
-import type {NextPage} from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
-import {atom, useAtom} from 'jotai';
-import {useEffect} from 'react';
-import axios from 'axios';
-import React from 'react';
-import {useForm} from 'react-hook-form';
-import {getMe, loginUser} from '../../services/user/user';
-import type {UserStoreState} from '../../store/userStore';
-import {useUserStore} from '../../store/userStore';
-import type {LoginFormData, UserStoreInfo} from '../../services/user/userTypes';
+import React, {useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import type {IconDefinition} from '@fortawesome/fontawesome-svg-core';
 
-const SideNavButton = () => {
-	const {register, handleSubmit} = useForm<LoginFormData>();
-	const setUser = useUserStore(state => state.setUser);
-	const loggedUser = useUserStore(state => state.username);
+type ButtonProps = {
+	icon: IconDefinition;
+	label: string;
+	onClick: () => void;
+	hovered?: boolean;
+};
+
+const SideNavButton = ({icon, label, onClick}: ButtonProps) => {
+	const [hovered, setHovered] = useState(false);
 
 	return (
-
-		<div className='flex bg-red-200 items-center flex-col fixed flex-1'>
-			<div>N</div>
-			<div>I</div>
-			<div>G</div>
-			<div>G</div>
-		</div>
-	);
+		<button
+			onMouseEnter={() => {
+				setHovered(true);
+			}}
+			onMouseLeave={() => {
+				setHovered(false);
+			}}
+			className={`m-1 inline-flex transition-all duration-300 px-3 items-center h-12 border border-transparent text-base
+   leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none
+    focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 ${
+		hovered ? 'w-56' : 'w-12'
+		} flex justify-content-center`}
+			onClick={onClick}
+		>
+			{icon && <FontAwesomeIcon size='lg' icon={icon} />}
+			{hovered
+				? <>
+					<span className='ml-2 transition-all duration-300'>{label}</span>
+				</> : null}
+		</button>);
 };
 
 export default SideNavButton;

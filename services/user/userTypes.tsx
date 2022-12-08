@@ -7,3 +7,9 @@ export type UserStoreInfo = {
 	username: string;
 	email: string;
 };
+
+export type RegisterFormData = {
+	username: string;
+	password: string;
+	email: string;
+};

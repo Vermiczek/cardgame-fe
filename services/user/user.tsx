@@ -34,3 +34,18 @@ export const logoutUser = async (username: string, password: string) => {
 	});
 	return logoutPromise;
 };
+
+export const registerUser = async (username: string, password: string, email: string) => {
+	const registerPromise = await axios({
+		method: 'post',
+		url: 'http://localhost:8000/user/register',
+		data: {
+			username,
+			password,
+			email,
+		},
+		withCredentials: true,
+	});
+	return registerPromise;
+};
+

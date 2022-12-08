@@ -2,7 +2,7 @@ import type {NextPage} from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import {atom, useAtom} from 'jotai';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import React from 'react';
 import {useForm} from 'react-hook-form';
@@ -10,10 +10,11 @@ import {getMe, loginUser} from '../../services/user/user';
 import type {UserStoreState} from '../../store/userStore';
 import {useUserStore} from '../../store/userStore';
 import type {LoginFormData, UserStoreInfo} from '../../services/user/userTypes';
+import SideNavButton from './SideNavButton';
+import {faCog, faDoorOpen, faUserCircle} from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faUser} from '@fortawesome/free-solid-svg-icons';
 
 const SideNav = () => {
-	const {register, handleSubmit} = useForm<LoginFormData>();
-	const setUser = useUserStore(state => state.setUser);
 	const resetUser = useUserStore(state => state.resetUser);
 	const loggedUser = useUserStore(state => state.username);
 	const logoutUser = async () => {
@@ -32,8 +33,8 @@ const SideNav = () => {
 
 	return (
 		<nav
-			className={`w-64 h-screen bg-gray-800 fixed top-0 left-0 transform ${
-				expanded ? 'translateX(0)' : 'translateX(-100%)'
+			className={`w-16 px-1 pt-1 h-screen bg-gray-800 fixed top-0 left-0 transition-all duration-500 ${
+				expanded ? 'bg-opacity-50' : 'bg-opacity-100'
 			}`}
 			onMouseEnter={() => {
 				setExpanded(true);
@@ -43,43 +44,46 @@ const SideNav = () => {
 			}}
 		>
 			<div className='h-full flex flex-col justify-between'>
+				{/* Top buttons */}
 				<div>
-					<a
-						href='#'
-						className='block px-4 py-2 mt-2 text-white font-bold hover:bg-gray-700'
-					>
-              Home
-					</a>
-					<a
-						href='#'
-						className='block px-4 py-2 mt-2 text-white font-bold hover:bg-gray-700'
-					>
-              About
-					</a>
-					<a
-						href='#'
-						className='block px-4 py-2 mt-2 text-white font-bold hover:bg-gray-700'
-					>
-              Contact
-					</a>
+					<SideNavButton
+						icon={faSearch}
+						label={'Dashboard'}
+						onClick={function (): void {
+							throw new Error('Function not implemented.');
+						}}
+					/>
+					<SideNavButton
+						icon={faSearch}
+						label={'Profile'}
+						onClick={function (): void {
+							throw new Error('Function not implemented.');
+						}}
+					/>
 				</div>
-				<div
-					className={`w-full bg-gray-900 ${
-						expanded ? 'flex' : 'hidden'
-					} justify-between items-center py-4`}
-				>
-					<a
-						href='#'
-						className='block px-4 py-2 mt-2 text-white font-bold hover:bg-gray-700'
-					>
-              Settings
-					</a>
-					<a
-						href='#'
-						className='block px-4 py-2 mt-2 text-white font-bold hover:bg-gray-700'
-					>
-              Log out
-					</a>
+				{/* Bottom buttons */}
+				<div>
+					<SideNavButton
+						icon={faUserCircle}
+						label={'Settings'}
+						onClick={function (): void {
+							throw new Error('Function not implemented.');
+						}}
+					/>
+					<SideNavButton
+						icon={faCog}
+						label={'Settings'}
+						onClick={function (): void {
+							throw new Error('Function not implemented.');
+						}}
+					/>
+					<SideNavButton
+						icon={faDoorOpen}
+						label={'Logout'}
+						onClick={function (): void {
+							throw new Error('Function not implemented.');
+						}}
+					/>
 				</div>
 			</div>
 		</nav>

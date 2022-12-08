@@ -17,13 +17,6 @@ const LoginForm = () => {
 	const loggedUser = useUserStore(state => state.username);
 	const formRef = useRef<HTMLFormElement>(null);
 
-	useEffect(() => {
-		if (loggedUser) {
-			// Redirect to home page if user is logged in
-			window.location.replace('/');
-		}
-	}, [loggedUser]);
-
 	const onSubmit = async (data: LoginFormData) => {
 		try {
 			await loginUser(data.password, data.username);
