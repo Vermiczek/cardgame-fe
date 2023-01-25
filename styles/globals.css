@@ -10,6 +10,11 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+.Toastify__toast-body .Toastify__toast--success .Toastify__success-svg {
+  width: 32px;
+  height: 32px;
+}
+
 a {
   color: inherit;
   text-decoration: none;

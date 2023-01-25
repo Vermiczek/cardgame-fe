@@ -5,20 +5,37 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import {useRouter} from 'next/router';
 import {useUserStore} from '../store/userStore';
 import SideNav from '../components/SideNav/SideNav';
-import {getMe} from '../services/user/user';
+import {getMe} from '../services/user';
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ErrorModal from '../components/Modals/ErrorModal';
+import MyParticles from '../components/ParticlesBackground';
+import MovingBackground from '../components/MovingBackground';
+import ParticleBackground from '../components/ParticlesBackground';
+import {useEventListeners} from '../store/deviceStore';
 
 const queryClient = new QueryClient();
 
+const contextClass = {
+	success: 'bg-blue-600',
+	error: 'bg-red-600',
+	info: 'bg-gray-600',
+	warning: 'bg-orange-400',
+	default: 'bg-indigo-600',
+	dark: 'bg-white-600 font-gray-300',
+};
+
 function MyApp({Component, pageProps}: AppProps) {
+	const [showModal, setShowModal] = React.useState(true);
 	const router = useRouter();
 	const loggedUser = useUserStore(state => state.username);
 	const setUser = useUserStore(state => state.setUser);
 	const resetUser = useUserStore(state => state.resetUser);
+	// UseEventListeners();
 
 	const getUser = () => {
 		getMe()
 			.then(res => {
-				console.log(res);
 				setUser(res.data.username, res.data.email);
 			})
 			.catch(e => {
@@ -37,7 +54,7 @@ function MyApp({Component, pageProps}: AppProps) {
 		}
 
 		if (loggedUser) {
-			router.replace('/dashboard').catch(err => {
+			router.replace('/rooms').catch(err => {
 				console.error(err);
 			});
 		}
@@ -55,14 +72,26 @@ function MyApp({Component, pageProps}: AppProps) {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<div>
-				<SideNav />
-				<div className='flex justify-center h-screen bg-red-200 items-center flex-col'>
-					<div className='w-3/4'>
-						<Component {...pageProps} />
-					</div>
+			<MovingBackground image='https://i.imgur.com/uMGUV3O.jpeg'/>
+			<ParticleBackground />
+			<ToastContainer
+				position='top-center'
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme='colored'
+			/>
+			<div className='relative flex justify-center h-screen items-center flex-col'>
+				<div className='w-3/4'>
+					<Component {...pageProps} />
 				</div>
 			</div>
+			<SideNav />
 		</QueryClientProvider>
 	);
 }

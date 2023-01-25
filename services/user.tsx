@@ -1,4 +1,19 @@
 import axios from 'axios';
+export type LoginFormData = {
+	username: string;
+	password: string;
+};
+
+export type UserStoreInfo = {
+	username: string;
+	email: string;
+};
+
+export type RegisterFormData = {
+	username: string;
+	password: string;
+	email: string;
+};
 
 export const loginUser = async (username: string, password: string) => {
 	const loginPromise = await axios({
@@ -22,14 +37,10 @@ export const getMe = async () => {
 	return mePromise;
 };
 
-export const logoutUser = async (username: string, password: string) => {
+export const logoutUser = async () => {
 	const logoutPromise = await axios({
-		method: 'post',
+		method: 'get',
 		url: 'http://localhost:8000/user/logout',
-		data: {
-			username,
-			password,
-		},
 		withCredentials: true,
 	});
 	return logoutPromise;
