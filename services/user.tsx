@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {useQuery} from 'react-query';
 export type LoginFormData = {
 	username: string;
 	password: string;
@@ -28,7 +29,7 @@ export const loginUser = async (username: string, password: string) => {
 	return loginPromise;
 };
 
-export const getMe = async () => {
+export const getUser = async () => {
 	const mePromise = await axios({
 		method: 'get',
 		url: 'http://localhost:8000/user/me',
@@ -36,6 +37,8 @@ export const getMe = async () => {
 	});
 	return mePromise;
 };
+
+export const useAuthUserQuery = () => useQuery('auth-user', getUser);
 
 export const logoutUser = async () => {
 	const logoutPromise = await axios({

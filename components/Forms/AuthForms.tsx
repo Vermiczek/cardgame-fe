@@ -30,19 +30,21 @@ const AuthForms = () => {
 	}, [loggedUser]);
 
 	return (
-		<div className='bg-gray-800'>
-			{hasAnAccount
-				? <LoginForm />
-				: <RegisterForm />
-			}
-			<button
-				className='block mx-auto py-2 px-4 bg-gray-200 rounded-md text-gray-700 font-semibold'
-				onClick={() => {
-					setHasAccount(!hasAnAccount);
-				}}
-			>
-				{hasAnAccount ? 'Don\'t have an account?' : 'Already have an account?'}
-			</button>
+		<div className='flex items-center justify-center'>
+			<div className='bg-gray-800 rounded-md opacity-90 p-8 w-96'>
+				{hasAnAccount
+					? <LoginForm />
+					: <RegisterForm />
+				}
+				<button
+					className='block mx-auto py-2 px-4 bg-gray-200 rounded-md text-gray-700 font-semibold'
+					onClick={() => {
+						setHasAccount(!hasAnAccount);
+					}}
+				>
+					{hasAnAccount ? 'Don\'t have an account?' : 'Already have an account?'}
+				</button>
+			</div>
 		</div>
 	);
 };

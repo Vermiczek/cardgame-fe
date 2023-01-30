@@ -5,7 +5,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import {useRouter} from 'next/router';
 import {useUserStore} from '../store/userStore';
 import SideNav from '../components/SideNav/SideNav';
-import {getMe} from '../services/user';
+import {getUser} from '../services/user';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorModal from '../components/Modals/ErrorModal';
@@ -33,18 +33,6 @@ function MyApp({Component, pageProps}: AppProps) {
 	const resetUser = useUserStore(state => state.resetUser);
 	// UseEventListeners();
 
-	const getUser = () => {
-		getMe()
-			.then(res => {
-				setUser(res.data.username, res.data.email);
-			})
-			.catch(e => {
-				console.error(e.response);
-				// Reset user
-				resetUser();
-			});
-	};
-
 	useEffect(() => {
 		// Redirect to the home page if the user is not logged in
 		if (!loggedUser) {
@@ -59,16 +47,6 @@ function MyApp({Component, pageProps}: AppProps) {
 			});
 		}
 	}, [loggedUser]);
-
-	useEffect(() => {
-		if (!loggedUser) {
-			getUser();
-
-			setInterval(() => {
-				getUser();
-			}, 100000);
-		}
-	}, []);
 
 	return (
 		<QueryClientProvider client={queryClient}>

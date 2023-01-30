@@ -6,21 +6,22 @@ import {useEffect, useRef, useState} from 'react';
 import axios, {AxiosError} from 'axios';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {getMe, loginUser} from '../../services/user';
+import {getUser, loginUser} from '../../services/user';
 import type {UserStoreState} from '../../store/userStore';
 import {useUserStore} from '../../store/userStore';
 import type {LoginFormData, UserStoreInfo} from '../../services/user';
 import {toast} from 'react-toastify';
+import {Input} from '@material-tailwind/react';
 
 const LoginForm = () => {
 	const {register, handleSubmit} = useForm<LoginFormData>();
 	const setUser = useUserStore(state => state.setUser);
 	const [errors, setErrors] = useState<Record<string, string>>({});
+	const [isLoading, setIsLoading] = useState(false);
 	const loggedUser = useUserStore(state => state.username);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const onSubmit = async (data: LoginFormData) => {
-		toast.success(':DDD', {type: 'success'});
 		// Validate the form
 		setErrors({});
 		if (!data.username) {
@@ -41,34 +42,24 @@ const LoginForm = () => {
 				password: 'Password must be between 6 and 100 characters',
 			}));
 		}
-
-		// If there are no validation errors, try to log in the user
-		if (Object.keys(errors).length === 0) {
-			try {
-				await loginUser(data.password, data.username);
-				const user = await getMe();
-				setUser(user.data.username, user.data.email);
-			} catch (e: unknown) {
-				console.error(e);
-			}
-		}
 	};
 
 	return (
-		<form ref={formRef} onSubmit={handleSubmit(onSubmit)} className='w-128 flex items-center p-10'>
+		<form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex items-center flex-col flex-1'>
-				<label className='block font-bold mb-1 text-gray-700'>
+				<label className='block font-bold mb-1 text-white'>
               Email
 				</label>
-				<input
-					type='text'
+				<Input
+					variant='standard'
+					label='Username'
+					nonce={undefined} onResize={undefined} onResizeCapture={undefined} type='text'
 					{...register('username', {required: true})}
-					className='bg-yellow-200 m-3 rounded-md w-40'
 				/>
 				{errors.username && (
 					<div className='error-message'>{errors.username}</div>
 				)}
-				<label className='block font-bold mb-1 text-gray-700'>
+				<label className='block font-bold mb-1 text-white'>
               Password
 				</label>
 				<input

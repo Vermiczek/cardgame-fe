@@ -6,7 +6,7 @@ import {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {getMe, loginUser} from '../../services/user';
+import {getUser, loginUser} from '../../services/user';
 import type {UserStoreState} from '../../store/userStore';
 import {useUserStore} from '../../store/userStore';
 import type {LoginFormData, UserStoreInfo} from '../../services/user';
