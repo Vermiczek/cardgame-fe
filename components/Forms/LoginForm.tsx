@@ -17,11 +17,11 @@ const LoginForm = () => {
 	const {register, handleSubmit} = useForm<LoginFormData>();
 	const setUser = useUserStore(state => state.setUser);
 	const [errors, setErrors] = useState<Record<string, string>>({});
-	const [isLoading, setIsLoading] = useState(false);
 	const loggedUser = useUserStore(state => state.username);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const onSubmit = async (data: LoginFormData) => {
+		toast.success(':DDD', {type: 'success'});
 		// Validate the form
 		setErrors({});
 		if (!data.username) {
@@ -41,6 +41,17 @@ const LoginForm = () => {
 				...errors,
 				password: 'Password must be between 6 and 100 characters',
 			}));
+		}
+
+		// If there are no validation errors, try to log in the user
+		if (Object.keys(errors).length === 0) {
+			try {
+				await loginUser(data.password, data.username);
+				const user = await getUser();
+				setUser(user.data.username, user.data.email);
+			} catch (e: unknown) {
+				console.error(e);
+			}
 		}
 	};
 
