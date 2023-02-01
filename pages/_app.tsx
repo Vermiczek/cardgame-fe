@@ -5,7 +5,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import {useRouter} from 'next/router';
 import {useUserStore} from '../store/userStore';
 import SideNav from '../components/SideNav/SideNav';
-import {getUser} from '../services/user';
+import {getUser, useAuthUserQuery} from '../services/user';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorModal from '../components/Modals/ErrorModal';
@@ -32,21 +32,6 @@ function MyApp({Component, pageProps}: AppProps) {
 	const setUser = useUserStore(state => state.setUser);
 	const resetUser = useUserStore(state => state.resetUser);
 	// UseEventListeners();
-
-	useEffect(() => {
-		// Redirect to the home page if the user is not logged in
-		if (!loggedUser) {
-			router.replace('/').catch(err => {
-				console.error(err);
-			});
-		}
-
-		if (loggedUser) {
-			router.replace('/rooms').catch(err => {
-				console.error(err);
-			});
-		}
-	}, [loggedUser]);
 
 	return (
 		<QueryClientProvider client={queryClient}>

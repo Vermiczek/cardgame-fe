@@ -36,10 +36,6 @@ const SideNav = () => {
 
 	const [expanded, setExpanded] = useState(false);
 
-	useEffect(() => {
-		console.log(user);
-	}, [user]);
-
 	return (
 		<>
 			<nav

@@ -38,7 +38,10 @@ export const getUser = async () => {
 	return mePromise;
 };
 
-export const useAuthUserQuery = () => useQuery('auth-user', getUser);
+export const useAuthUserQuery = () => {
+	const {data, isLoading, error} = useQuery('auth-user', getUser);
+	return data;
+};
 
 export const logoutUser = async () => {
 	const logoutPromise = await axios({
