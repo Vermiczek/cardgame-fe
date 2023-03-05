@@ -1,18 +1,18 @@
 import '../styles/globals.css';
-import type {AppProps} from 'next/app';
-import React, {useEffect} from 'react';
-import {QueryClient, QueryClientProvider} from 'react-query';
-import {useRouter} from 'next/router';
-import {useUserStore} from '../store/userStore';
+import type { AppProps } from 'next/app';
+import React, { useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { useRouter } from 'next/router';
+import { useUserStore } from '../store/userStore';
 import SideNav from '../components/SideNav/SideNav';
-import {getUser, useAuthUserQuery} from '../services/user';
-import {toast, ToastContainer} from 'react-toastify';
+import { getUser, useAuthUserQuery } from '../services/user';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorModal from '../components/Modals/ErrorModal';
 import MyParticles from '../components/ParticlesBackground';
 import MovingBackground from '../components/MovingBackground';
 import ParticleBackground from '../components/ParticlesBackground';
-import {useEventListeners} from '../store/deviceStore';
+import { useEventListeners } from '../store/deviceStore';
 
 const queryClient = new QueryClient();
 
@@ -25,17 +25,14 @@ const contextClass = {
 	dark: 'bg-white-600 font-gray-300',
 };
 
-function MyApp({Component, pageProps}: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
 	const [showModal, setShowModal] = React.useState(true);
 	const router = useRouter();
-	const loggedUser = useUserStore(state => state.username);
-	const setUser = useUserStore(state => state.setUser);
-	const resetUser = useUserStore(state => state.resetUser);
 	// UseEventListeners();
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<MovingBackground image='https://i.imgur.com/uMGUV3O.jpeg'/>
+			<MovingBackground image='https://i.imgur.com/uMGUV3O.jpeg' />
 			<ParticleBackground />
 			<ToastContainer
 				position='top-center'

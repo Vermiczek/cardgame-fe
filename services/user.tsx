@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {useQuery} from 'react-query';
+import { useQuery } from 'react-query';
+
 export type LoginFormData = {
 	username: string;
 	password: string;
@@ -34,13 +35,17 @@ export const getUser = async () => {
 		method: 'get',
 		url: 'http://localhost:8000/user/me',
 		withCredentials: true,
-	});
+	})
 	return mePromise;
 };
 
 export const useAuthUserQuery = () => {
-	const {data, isLoading, error} = useQuery('auth-user', getUser);
-	return data;
+	type UserResponse = {
+		data: { [key: string]: any };
+	};
+
+	const { data, isLoading, error } = useQuery<UserResponse>('auth-user', getUser);
+	return { data: data?.data || null, isLoading, error };
 };
 
 export const logoutUser = async () => {

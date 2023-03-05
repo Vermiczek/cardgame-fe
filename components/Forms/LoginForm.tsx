@@ -1,31 +1,32 @@
-import type {NextPage} from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import {atom, useAtom} from 'jotai';
-import {useEffect, useRef, useState} from 'react';
-import axios, {AxiosError} from 'axios';
+import { atom, useAtom } from 'jotai';
+import { useEffect, useRef, useState } from 'react';
+import axios, { AxiosError } from 'axios';
 import React from 'react';
-import {useForm} from 'react-hook-form';
-import {getUser, loginUser} from '../../services/user';
-import type {UserStoreState} from '../../store/userStore';
-import {useUserStore} from '../../store/userStore';
-import type {LoginFormData, UserStoreInfo} from '../../services/user';
-import {toast} from 'react-toastify';
-import {Input} from '@material-tailwind/react';
+import { useForm } from 'react-hook-form';
+import { getUser, loginUser } from '../../services/user';
+import type { UserStoreState } from '../../store/userStore';
+import { useUserStore } from '../../store/userStore';
+import type { LoginFormData, UserStoreInfo } from '../../services/user';
+import { toast } from 'react-toastify';
+import { Input } from '@material-tailwind/react';
+import { Spinner } from '@chakra-ui/react';
 
 const LoginForm = () => {
-	const {register, handleSubmit} = useForm<LoginFormData>();
+	const { register, handleSubmit } = useForm<LoginFormData>();
 	const setUser = useUserStore(state => state.setUser);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 	const loggedUser = useUserStore(state => state.username);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const onSubmit = async (data: LoginFormData) => {
-		toast.success(':DDD', {type: 'success'});
+		toast.success(':DDD', { type: 'success' });
 		// Validate the form
 		setErrors({});
 		if (!data.username) {
-			setErrors(errors => ({...errors, username: 'Username is required'}));
+			setErrors(errors => ({ ...errors, username: 'Username is required' }));
 		} else if (data.username.length < 6 || data.username.length > 20) {
 			setErrors(errors => ({
 				...errors,
@@ -35,7 +36,7 @@ const LoginForm = () => {
 
 		// Validate the password, show an error if it's not valid
 		if (!data.password) {
-			setErrors(errors => ({...errors, password: 'Password is required'}));
+			setErrors(errors => ({ ...errors, password: 'Password is required' }));
 		} else if (data.password.length < 6 || data.password.length > 100) {
 			setErrors(errors => ({
 				...errors,
@@ -55,27 +56,27 @@ const LoginForm = () => {
 		}
 	};
 
-	return (
+	return (<>
 		<form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex items-center flex-col flex-1'>
 				<label className='block font-bold mb-1 text-white'>
-              Email
+					Email
 				</label>
 				<Input
 					variant='standard'
 					label='Username'
 					nonce={undefined} onResize={undefined} onResizeCapture={undefined} type='text'
-					{...register('username', {required: true})}
+					{...register('username', { required: true })}
 				/>
 				{errors.username && (
 					<div className='error-message'>{errors.username}</div>
 				)}
 				<label className='block font-bold mb-1 text-white'>
-              Password
+					Password
 				</label>
 				<input
 					type='text'
-					{...register('password', {required: true})}
+					{...register('password', { required: true })}
 					className='bg-yellow-200 m-3 rounded-md w-40'
 				/>
 				{errors.password && (
@@ -88,6 +89,7 @@ const LoginForm = () => {
 				/>
 			</div>
 		</form>
+	</>
 	);
 };
 

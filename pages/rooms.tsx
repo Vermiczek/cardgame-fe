@@ -1,14 +1,14 @@
-import type {NextPage} from 'next';
-import {atom, useAtom} from 'jotai';
+import type { NextPage } from 'next';
+import { atom, useAtom } from 'jotai';
 import LoginForm from '../components/Forms/LoginForm';
 import create from 'zustand';
-import React, {useEffect, useState} from 'react';
-import {useQuery} from 'react-query';
-import {getUser, loginUser} from '../services/user';
-import {useUserStore} from '../store/userStore';
-import {useRouter} from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { getUser, loginUser, useAuthUserQuery } from '../services/user';
+import { useUserStore } from '../store/userStore';
+import { useRouter } from 'next/router';
 import RegisterForm from '../components/Forms/RegisterForm';
-import {getRooms} from '../services/rooms';
+import { getRooms } from '../services/rooms';
 
 type RoomType = {
 	id: string;
@@ -18,9 +18,8 @@ type RoomType = {
 const Rooms = () => {
 	const [hasAnAccount, setHasAccount] = useState(true);
 	const [rooms, setRooms] = useState<RoomType[]>([]);
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const loggedUser = useUserStore(state => state.username);
 	const router = useRouter();
+	const { data, isLoading, error } = useAuthUserQuery();
 
 	const fetchData = async () => {
 		try {
@@ -31,20 +30,6 @@ const Rooms = () => {
 			console.error(error);
 		}
 	};
-
-	useEffect(() => {
-		fetchData().catch(err => {
-			console.log(err);
-		});
-	}, []);
-
-	useEffect(() => {
-		if (!loggedUser) {
-			router.replace('/').catch(err => {
-				console.error(err);
-			});
-		}
-	}, [loggedUser]);
 
 	return (
 		<div className='scrollable-container h-screen overflow-y-auto'>

@@ -1,10 +1,10 @@
-import React, {useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from 'react';
 
 type BackgroundProps = {
 	image: string;
 };
 
-const MovingBackground = ({image}: BackgroundProps) => {
+const MovingBackground = ({ image }: BackgroundProps) => {
 	const backgroundRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -13,8 +13,8 @@ const MovingBackground = ({image}: BackgroundProps) => {
 				return;
 			}
 
-			const {clientX, clientY} = event;
-			const {offsetWidth, offsetHeight} = backgroundRef.current;
+			const { clientX, clientY } = event;
+			const { offsetWidth, offsetHeight } = backgroundRef.current;
 			const x = clientX / offsetWidth;
 			const y = clientY / offsetHeight;
 			backgroundRef.current.style.transform = `scale(1.2) translate(${(-x * 20) - 20}px, ${(-y * 20)}px)`;
@@ -31,7 +31,7 @@ const MovingBackground = ({image}: BackgroundProps) => {
 		<div
 			ref={backgroundRef}
 			className='h-screen w-screen bg-center bg-cover fixed'
-			style={{backgroundImage: `url(${image})`}}
+			style={{ backgroundImage: `url(${image})` }}
 		/>
 	);
 };
